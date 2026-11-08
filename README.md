@@ -27,13 +27,10 @@ flowchart LR
     class BQ planned
 ```
 
-O Apache Hop orquestra a ingestão, transformação e carga. A Gold inclui dimensões e uma tabela de factos; não são usadas materialized views.
+O Apache Hop orquestra a ingestão, transformação e carga. A Gold inclui dimensões e uma tabela de factos.
 
-**Legenda:** verde representa componentes e fluxos existentes; amarelo tracejado representa a integração com BigQuery, ainda por configurar e implementar.
+**Legenda:** verde representa componentes e fluxos existentes; amarelo tracejado representa a integração com BigQuery.
 
-### Estado da integração com BigQuery
-
-O projeto inclui a definição de conexão `cloud_bigquery`, mas os seus parâmetros estão vazios. As pipelines e os scripts SQL existentes usam a conexão `pg_sales_incremental`; ainda não há uma etapa configurada para publicar ou sincronizar dados da Gold com o BigQuery. Portanto, a parte cloud da arquitetura requer configuração e implementação antes de estar operacional.
 
 ## Camadas de dados
 
@@ -42,7 +39,7 @@ O projeto inclui a definição de conexão `cloud_bigquery`, mas os seus parâme
 | **Bronze** | Registar os dados de origem dos ficheiros de vendas, mantendo o histórico recebido. |
 | **Silver** | Normalizar e tipar os dados; encaminhar linhas inválidas para rejeições com a respetiva descrição e código de erro. |
 | **Gold** | Disponibilizar dimensões conformadas e a fact table de vendas para análise. |
-| **BigQuery** | Destino analítico cloud planeado para consumo e análise; a publicação ainda não está configurada nas pipelines existentes. |
+| **BigQuery** | Destino analítico cloud planeado para consumo e análise. |
 
 As tabelas Silver definidas no projeto são `silver.vendas` e `silver.vendas_rejeitadas`. A Gold é composta por `gold.dim_calendario`, `gold.dim_loja`, `gold.dim_produto`, `gold.dim_vendedor`, `gold.dim_metodo_pagamento` e `gold.fact_vendas`.
 
@@ -95,13 +92,12 @@ As pipelines exploratórias estão em `pipeline/rascunho/` e não fazem parte do
 5. Execute o workflow de Silver antes do workflow Gold.
 6. Para integrar BigQuery, configure a conexão `SUA CONEXAO` localmente e implemente/teste a etapa de publicação da Gold. 
 
-Os valores de conexão e credenciais são específicos de cada ambiente; não devem ser incluídos neste README nem commitados.
+Os valores de conexão e credenciais são específicos de cada ambiente.
 
 ## Execução e verificações
 
 Execute primeiro o workflow Silver e confirme que o ficheiro foi processado, que as linhas esperadas estão em `silver.vendas` e que eventuais rejeições estão em `silver.vendas_rejeitadas`. Só depois execute o workflow Gold.
 
-O sucesso do workflow indica que as etapas terminaram sem erro, mas não garante por si só que uma quantidade específica de linhas foi carregada. Confirme os totais por ficheiro e os resultados das dimensões e da fact table no PostgreSQL.
 
 ## Calendário
 
@@ -109,7 +105,7 @@ A dimensão calendário é criada pelo script `sql/02_create_gold_dim_calendario
 
 ## Controlo de versão e dados sensíveis
 
-O `.gitignore` exclui dados locais, logs, ficheiros JSON e o conteúdo de `metadata/`, que pode conter configurações específicas do ambiente. Antes de adicionar ficheiros ao Git, confirme que não incluem dados de clientes, credenciais, tokens ou outros segredos. Partilhe apenas configurações de exemplo sem valores secretos.
+O `.gitignore` exclui dados locais, logs, ficheiros JSON e o conteúdo de `metadata/`, que pode conter configurações específicas do ambiente.
 
 ## Principais scripts SQL
 
