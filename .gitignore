@@ -1,0 +1,34 @@
+# =====================================
+# Dados de execução e ficheiros de entrada
+# =====================================
+processados/*
+data/*
+metadata/*
+
+# Preservar estrutura das pastas
+!processados/.gitkeep
+!data/.gitkeep
+!metadata/.gitkeep
+
+# =====================================
+# Ficheiros locais e credenciais
+# =====================================
+.env
+.env.*
+*.env
+
+# Excepção para ficheiros de exemplo
+!.env.example
+
+# =====================================
+# Logs e ficheiros temporários
+# =====================================
+*.log
+*.tmp
+*.bak
+*.txt
+
+# =====================================
+# Ficheiros JSON locais
+# =====================================
+*.json
