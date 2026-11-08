@@ -3,6 +3,7 @@
 # =====================================
 processados/*
 data/*
+data/rascunho/
 metadata/*
 
 # Preservar estrutura das pastas
